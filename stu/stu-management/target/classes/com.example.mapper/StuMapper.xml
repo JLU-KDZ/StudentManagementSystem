@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.StuMapper">
+
+    <sql id="commenSelect">
+        select id,
+               username,
+               password,
+               name,
+               gender,
+               image,
+               grade,
+               entrydate,
+               dept2_id,
+               class_id,
+               create_by,
+               create_time,
+               update_by,
+               update_time
+    </sql>
+
+    <select id="page2" resultType="com.example.pojo.Stu">
+        SELECT *
+        FROM (
+        SELECT ROWNUM r,s.*
+        FROM STU s
+        <where>
+            <if test="name != null and name != ''">
+                name LIKE '%' || #{name} || '%'
+            </if>
+            <if test="stuId != null and stuId != ''">
+                AND stu_id = #{stuId}
+            </if>
+            <if test="begin != null and end != null">
+                AND ENTRYDATE BETWEEN #{begin} AND #{end}
+            </if>
+        </where>
+        )
+        WHERE r between #{startRow} and #{endRow}
+    </select>
+
+    <select id="getUsernameByIds" resultType="java.lang.String">
+        select username from stu where id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </select>
+
+
+    <!--    <select id="list" resultType="com.example.pojo.Stu">-->
+    <!--        select *-->
+    <!--        from STU-->
+    <!--        <where>-->
+    <!--            <if test="name != null">-->
+    <!--                AND name LIKE '%' || #{name} || '%'-->
+    <!--            </if>-->
+    <!--            <if test="gender != null">-->
+    <!--                AND gender = #{gender}-->
+    <!--            </if>-->
+    <!--            <if test="begin != null and end != null">-->
+    <!--                AND ENTRYDATE BETWEEN #{begin} AND #{end}-->
+    <!--            </if>-->
+    <!--        </where>-->
+    <!--        ORDER BY UPDATE_TIME DESC-->
+    <!--    </select>-->
+
+
+    <delete id="deleteByIds">
+        delete from stu where id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <insert id="insert">
+        insert into STU (username, stu_id, name, gender, phonenumber, image, GRADE, entrydate, dept2_id, CLASS_ID,
+                         CREATE_BY, create_time,
+                         UPDATE_BY, update_time)
+        values (#{username}, #{stuId}, #{name}, #{gender}, #{phonenumber}, #{image}, #{grade}, #{entrydate}, #{dept2Id},
+                #{classId}, user, sysdate, user, sysdate)
+    </insert>
+
+    <update id="update">
+        update stu
+        <set>
+            <if test="username != null and username != ''">
+                username = #{username},
+            </if>
+            <if test="password != null and password != ''">
+                password = #{password},
+            </if>
+            <if test="stuId != null and stuId != ''">
+                stu_id = #{stuId},
+            </if>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="gender != null">
+                gender = #{gender},
+            </if>
+            <if test="phonenumber != null and phonenumber != ''">
+                phonenumber = #{phonenumber},
+            </if>
+            <if test="image != null and image != ''">
+                image = #{image},
+            </if>
+            <if test="grade != null">
+                grade = #{grade},
+            </if>
+            <if test="entrydate != null">
+                entrydate = #{entrydate},
+            </if>
+            <if test="dept2Id != null">
+                dept2_id = #{dept2Id},
+            </if>
+            <if test="classId != null">
+                class_id = #{classId},
+            </if>
+            update_by = USER,
+            update_time = sysdate
+        </set>
+        where id = #{id}
+    </update>
+
+
+</mapper>

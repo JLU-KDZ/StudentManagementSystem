@@ -1,0 +1,18 @@
+#文件上传的配置
+
+spring:
+  datasource:
+    url: jdbc:oracle:thin:@localhost:1521:orcl
+    username: scott
+    password: tiger
+    driver-class-name: oracle.jdbc.OracleDriver
+
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 100MB
+
+mybatis:
+  mapper-locations: classpath:com.example.mapper/StuMapper.xml ,com.example.mapper/UserMapper.xml ,com.example.mapper/CourseMapper.xml, com.example.mapper/TeacherMapper.xml, com.example.mapper/EnrollmentMapper.xml, com.example.mapper/MajorMapper.xml
+

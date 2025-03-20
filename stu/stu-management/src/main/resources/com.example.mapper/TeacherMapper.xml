@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.TeacherMapper">
+    <update id="update">
+        update teacher
+        <set>
+            <if test="username != null and username != ''">
+                username = #{username},
+            </if>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="gender != null">
+                gender = #{gender},
+            </if>
+            <if test="age != null">
+                age = #{age},
+            </if>
+            <if test="dept2Id != null">
+                dept2_id = #{dept2Id},
+            </if>
+            <if test="phoneNumber != null and phoneNumber != ''">
+                phone_number = #{phoneNumber},
+            </if>
+            <if test="email != null and email != ''">
+                email = #{email},
+            </if>
+            <if test="office != null and office != ''">
+                office = #{office},
+            </if>
+            update_by = USER,
+            update_time = sysdate
+        </set>
+        where id = #{id}
+    </update>
+
+
+    <select id="page" resultType="com.example.pojo.Teacher">
+        SELECT *
+        FROM (
+        SELECT ROWNUM r,t.*
+        FROM Teacher t
+        <where>
+            <if test="name != null and name != ''">
+                name LIKE '%' || #{name} || '%'
+            </if>
+            <if test="dept2Id != null">
+                AND dept2_id = #{dept2Id}
+            </if>
+        </where>
+        )
+        WHERE r between #{startRow} and #{endRow}
+    </select>
+
+</mapper>

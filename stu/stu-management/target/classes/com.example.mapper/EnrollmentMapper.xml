@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.EnrollmentMapper">
+
+    <select id="listJoin" resultType="com.example.pojo.EnrollCourseJoin">
+        select e.id id,
+        e.STU_NAME stu_name,
+        e.COURSE_ID course_id,
+        c.name course_name,
+        c.major_id major_id,
+        c.CREDIT credit,
+        c.time time,
+        c.location location
+        from ENROLLMENT e,COURSE c
+        <where>
+            e.COURSE_ID = c.id
+            <if test="stuName != null and stuName != ''">
+                and e.stu_name =  #{stuName}
+            </if>
+            <if test="courseName != null and courseName != ''">
+                and c.name = #{courseName}
+            </if>
+
+        </where>
+    </select>
+
+    <select id="listTimes" resultType="com.example.pojo.EnrollCourseJoin">
+
+        select s.ID id,
+        s.NAME stu_name,
+        c.ID course_id,
+        c.name course_name,
+        c.major_id major_id,
+        c.CREDIT credit,
+        c.time time,
+        c.location location
+        from STU s,COURSE c
+        <where>
+
+            <if test="stuName != null and stuName != ''">
+                s.name = #{stuName}
+            </if>
+            <if test="courseName != null and courseName != ''">
+                and c.name = #{courseName}
+            </if>
+
+        </where>
+    </select>
+
+
+
+
+
+    <select id="listJoinByCid" resultType="com.example.pojo.EnrollCourseJoin">
+        select e.id id,
+        e.STU_NAME stu_name,
+        e.COURSE_ID course_id,
+        c.name course_name,
+        c.major_id major_id,
+        c.CREDIT credit,
+        c.time time,
+        c.location location
+        from ENROLLMENT e,COURSE c
+        <where>
+            e.COURSE_ID = c.id
+            <if test="id_item != null">
+                and e.course_id = #{id_item}
+            </if>
+            <if test="courseId != null">
+                and e.course_id = #{courseId}
+            </if>
+
+        </where>
+    </select>
+
+
+    <select id="listJoinByCidNull" resultType="com.example.pojo.EnrollCourseJoin">
+        select e.id id,
+        e.STU_NAME stu_name,
+        e.COURSE_ID course_id,
+        c.name course_name,
+        c.major_id major_id,
+        c.CREDIT credit,
+        c.time time,
+        c.location location
+        from ENROLLMENT e,COURSE c
+        <where>
+            e.COURSE_ID = c.id
+            <if test="id_item != null">
+                and e.course_id = #{id_item}
+            </if>
+
+        </where>
+    </select>
+</mapper>
